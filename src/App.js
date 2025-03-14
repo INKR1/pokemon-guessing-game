@@ -4,6 +4,8 @@ import { fetchPokemonList } from "./services/pokemonAPIdata";
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
 
+  const capitalizeName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+
   useEffect(() => {
     fetchPokemonList().then(setPokemonList);
   }, []);
@@ -13,7 +15,10 @@ function App() {
       <h1>Pokémon Guessing Game</h1>
       <ul>
         {pokemonList.map((pokemon) => (
-          <li key={pokemon.id}>{pokemon.name}</li>
+          <li key={pokemon.id}>
+            <img src={pokemon.color} alt={pokemon.name} />
+            {capitalizeName(pokemon.name)} - Type: {pokemon.type.join(", ")}
+            </li>
         ))}
       </ul>
     </div>
