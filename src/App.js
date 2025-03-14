@@ -17,7 +17,8 @@ function App() {
         {pokemonList.map((pokemon) => (
           <li key={pokemon.id}>
             <img src={pokemon.color} alt={pokemon.name} />
-            {capitalizeName(pokemon.name)} - Type: {pokemon.type.join(", ")}
+            {capitalizeName(pokemon.name)} - Type: {pokemon.type.join(", ")} <br />
+            {pokemon.canEvolve ? "Can evolve 🔺" : "Final form 🔹"}
             </li>
         ))}
       </ul>
