@@ -3,7 +3,7 @@ import { questions } from "./questionnaire";
 
 const MAX_GUESSES = 10;
 
-const EasyMode = ({ pokemonList }) => {
+const EasyMode = ({ pokemonList, onGoHome  }) => {
   const [question, setQuestion] = useState(null);
   const [choices, setChoices] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
@@ -72,6 +72,7 @@ const EasyMode = ({ pokemonList }) => {
           <h2>Game Over!</h2>
           <p>Your final score: {score} / {MAX_GUESSES}</p>
           <button onClick={handleRestart}>Play Again</button>
+          <button onClick={onGoHome}>Go Back Home</button>
         </>
       )}
     </div>

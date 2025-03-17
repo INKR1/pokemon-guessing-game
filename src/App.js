@@ -4,29 +4,24 @@ import EasyMode from "./components/easyMode";
 
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
-  const [score, setScore] = useState(0);
+  const [gameMode, setGameMode] = useState(null);
 
   useEffect(() => {
     fetchPokemonList().then(setPokemonList);
   }, []);
 
-  const handleAnswer = (isCorrect) => {
-    if (isCorrect) {
-      setScore(score + 1);
-      alert("Correct!");
-    } else {
-      alert("Wrong answer! Try again.");
-    }
-  };
-
   return (
     <div>
-      <h1>Pokémon Guessing Game</h1>
-      {pokemonList.length > 0 && (
-        <EasyMode pokemonList={pokemonList} onAnswer={handleAnswer} />
+      {!gameMode ? (
+        <>
+          <h1>Pokémon Guessing Game</h1>
+          <button onClick={() => setGameMode("easy")}>Easy Mode</button>
+        </>
+      ) : (
+        <EasyMode pokemonList={pokemonList} onGoHome={() => setGameMode(null)} />
       )}
     </div>
   );
-}
+};
 
 export default App;
