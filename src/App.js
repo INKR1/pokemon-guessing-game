@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { fetchPokemonList } from "./services/pokemonAPIdata";
+import EasyMode from "./components/easyMode";
 
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
-
-  const capitalizeName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     fetchPokemonList().then(setPokemonList);
   }, []);
 
+  const handleAnswer = (isCorrect) => {
+    if (isCorrect) {
+      setScore(score + 1);
+      alert("Correct!");
+    } else {
+      alert("Wrong answer! Try again.");
+    }
+  };
+
   return (
     <div>
       <h1>Pokémon Guessing Game</h1>
-      <ul>
-        {pokemonList.map((pokemon) => (
-          <li key={pokemon.id}>
-            <img src={pokemon.color} alt={pokemon.name} />
-            {capitalizeName(pokemon.name)} - Type: {pokemon.type.join(", ")} <br />
-            {pokemon.canEvolve ? "Can evolve 🔺" : "Final form 🔹"}
-            </li>
-        ))}
-      </ul>
+      <h2>Score: {score}</h2>
+      {pokemonList.length > 0 && (
+        <EasyMode pokemonList={pokemonList} onAnswer={handleAnswer} />
+      )}
     </div>
   );
 }
