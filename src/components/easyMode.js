@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { questions } from "./questionnaire";
 
-const EasyMode = ({ pokemonList, onAnswer }) => {
+const MAX_GUESSES = 10;
+
+const EasyMode = ({ pokemonList }) => {
   const [question, setQuestion] = useState(null);
   const [choices, setChoices] = useState([]);
-  const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [score, setScore] = useState(0);
+  const [guesses, setGuesses] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
   const generateQuestion = () => {
     if (pokemonList.length === 0) return;
@@ -13,13 +18,12 @@ const EasyMode = ({ pokemonList, onAnswer }) => {
     const correctOptions = pokemonList.filter(selectedQuestion.filter);
     if (correctOptions.length === 0) return;
 
-    const correctPokemon = correctOptions[Math.floor(Math.random() * correctOptions.length)];
-    let otherChoices = pokemonList.filter(p => p.name !== correctPokemon.name);
+    let otherChoices = pokemonList.filter(p => !correctOptions.includes(p));
     otherChoices = otherChoices.sort(() => 0.5 - Math.random()).slice(0, 2);
 
     setQuestion(selectedQuestion);
-    setChoices([correctPokemon, ...otherChoices].sort(() => Math.random() - 0.5));
-    setCorrectAnswer(correctPokemon);
+    setChoices([...correctOptions.slice(0, 1), ...otherChoices].sort(() => Math.random() - 0.5));
+    setCorrectAnswers(correctOptions.map(p => p.name)); // Store all correct answer names
   };
 
   useEffect(() => {
@@ -27,20 +31,49 @@ const EasyMode = ({ pokemonList, onAnswer }) => {
   }, [pokemonList]);
 
   const handleChoiceClick = (choice) => {
-    onAnswer(choice.name === correctAnswer.name);
-    generateQuestion(); // Refresh with a new question
+    if (gameOver) return;
+
+    if (correctAnswers.includes(choice.name)) {
+      setScore(score + 1);
+    }
+
+    setGuesses(guesses + 1);
+
+    if (guesses + 1 >= MAX_GUESSES) {
+      setGameOver(true);
+    } else {
+      generateQuestion();
+    }
+  };
+
+  const handleRestart = () => {
+    setScore(0);
+    setGuesses(0);
+    setGameOver(false);
+    generateQuestion();
   };
 
   return (
     <div>
-      <h2>{question?.text}</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-        {choices.map((pokemon) => (
-          <button key={pokemon.name} onClick={() => handleChoiceClick(pokemon)}>
-            <img src={pokemon.color} alt={pokemon.name} />
-          </button>
-        ))}
-      </div>
+      {!gameOver ? (
+        <>
+          <h2>{question?.text}</h2>
+          <div style={{ display: "flex", gap: "10px" }}>
+            {choices.map((pokemon) => (
+              <button key={pokemon.name} onClick={() => handleChoiceClick(pokemon)}>
+                <img src={pokemon.color} alt={pokemon.name} />
+              </button>
+            ))}
+          </div>
+          <p>Guesses: {guesses} / {MAX_GUESSES}</p>
+        </>
+      ) : (
+        <>
+          <h2>Game Over!</h2>
+          <p>Your final score: {score} / {MAX_GUESSES}</p>
+          <button onClick={handleRestart}>Play Again</button>
+        </>
+      )}
     </div>
   );
 };

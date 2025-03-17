@@ -22,7 +22,6 @@ function App() {
   return (
     <div>
       <h1>Pokémon Guessing Game</h1>
-      <h2>Score: {score}</h2>
       {pokemonList.length > 0 && (
         <EasyMode pokemonList={pokemonList} onAnswer={handleAnswer} />
       )}
