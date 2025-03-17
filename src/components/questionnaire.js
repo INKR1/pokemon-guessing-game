@@ -1,120 +1,94 @@
 import { useState } from "react";
 
-const questions = [
+export const questions = [
   {
     id: "canEvolve",
-    text: "Can this Pokémon evolve?",
+    text: "Which Pokémon can evolve?",
     filter: (pokemon) => pokemon.canEvolve,
   },
-  // TYPES
   {
     id: "isFireType",
-    text: "Is this Pokémon a Fire-type?",
+    text: "Which Pokémon is Fire-type?",
     filter: (pokemon) => pokemon.type.includes("fire"),
   },
   {
     id: "isGrassType",
-    text: "Is this Pokémon a Grass-type?",
+    text: "Which Pokémon is a Grass-type?",
     filter: (pokemon) => pokemon.type.includes("grass"),
   },
   {
     id: "isWaterType",
-    text: "Is this Pokémon a Water-type?",
+    text: "Which Pokémon is a Water-type?",
     filter: (pokemon) => pokemon.type.includes("water"),
   },
   {
+    id: "canFly",
+    text: "Which Pokémon can fly?",
+    filter: (pokemon) => pokemon.type.includes("flying"),
+  },
+  {
     id: "isIceType",
-    text: "Is this Pokémon a Ice-type?",
+    text: "Which Pokémon is a Ice-type?",
     filter: (pokemon) => pokemon.type.includes("ice"),
   },
   {
     id: "isSteelType",
-    text: "Is this Pokémon a Steel-type?",
+    text: "Which Pokémon is a Steel-type?",
     filter: (pokemon) => pokemon.type.includes("steel"),
   },
   {
     id: "isPoisonType",
-    text: "Is this Pokémon a Poison-type?",
+    text: "Which Pokémon is a Poison-type?",
     filter: (pokemon) => pokemon.type.includes("poison"),
   },
   {
     id: "isBugType",
-    text: "Is this Pokémon a Bug?",
+    text: "Which Pokémon is a Bug?",
     filter: (pokemon) => pokemon.type.includes("bug"),
   },
   {
     id: "isNormalType",
-    text: "Is this Pokémon a Normal-type?",
+    text: "Which Pokémon is a Normal-type?",
     filter: (pokemon) => pokemon.type.includes("normal"),
   },
   {
     id: "isElectricType",
-    text: "Is this Pokémon a Electric-type?",
+    text: "Which Pokémon is a Electric-type?",
     filter: (pokemon) => pokemon.type.includes("electric"),
   },
   {
     id: "isGroundType",
-    text: "Is this Pokémon a Ground-type?",
+    text: "Which Pokémon is a Ground-type?",
     filter: (pokemon) => pokemon.type.includes("ground"),
   },
   {
     id: "isFightingType",
-    text: "Is this Pokémon a Fightinf-type?",
+    text: "Which Pokémon is a Fightinf-type?",
     filter: (pokemon) => pokemon.type.includes("fighting"),
   },
   {
     id: "isPsychicType",
-    text: "Is this Pokémon a Psychic-type?",
+    text: "Which Pokémon is a Psychic-type?",
     filter: (pokemon) => pokemon.type.includes("psychic"),
   },
   {
     id: "isRockType",
-    text: "Is this Pokémon a Rock-type?",
+    text: "Which Pokémon is a Rock-type?",
     filter: (pokemon) => pokemon.type.includes("rock"),
   },
   {
     id: "isGhostType",
-    text: "Is this Pokémon a Ghost-type?",
+    text: "Which Pokémon is a Ghost-type?",
     filter: (pokemon) => pokemon.type.includes("ghost"),
   },
   {
     id: "isDragonType",
-    text: "Is this Pokémon a Dragon-type?",
+    text: "Which Pokémon is a Dragon-type?",
     filter: (pokemon) => pokemon.type.includes("dragon"),
   },
   {
-    id: "canFly",
-    text: "Is this Pokémon can fly?",
-    filter: (pokemon) => pokemon.type.includes("flying"),
+    id: "multiType",
+    text: "Which Pokémon has more than one type?",
+    filter: (pokemon) => pokemon.type.length > 1,
   },
 ];
-
-const Questionnaire = ({ pokemonList, setFilteredPokemon }) => {
-  const [selectedQuestion, setSelectedQuestion] = useState("");
-
-  const handleFilterChange = (questionId) => {
-    setSelectedQuestion(questionId);
-    const question = questions.find((q) => q.id === questionId);
-    if (question) {
-      setFilteredPokemon(pokemonList.filter(question.filter));
-    } else {
-      setFilteredPokemon(pokemonList);
-    }
-  };
-
-  return (
-    <div>
-      <h2>Filter Pokémon</h2>
-      <select onChange={(e) => handleFilterChange(e.target.value)}>
-        <option value="">Show All</option>
-        {questions.map((q) => (
-          <option key={q.id} value={q.id}>
-            {q.text}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
-
-export default Questionnaire;
